@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Icon" href="assets/logo">
+    <title>HeavyLift Pro | Industrial Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+        function applySettings() {
+            if (localStorage.theme === 'dark') document.documentElement.classList.add('dark');
+            document.documentElement.dir = localStorage.dir || 'ltr';
+        }
+        applySettings();
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 font-sans transition-colors duration-300">
+
+    <nav class="p-4 md:p-6 flex justify-between items-center bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+        <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0">
+            <img src="assets/logo" alt="Logo" class="w-8 h-8 md:w-10 md:h-10 object-contain dark:invert">
+            <span class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Crane</span>
+        </a>        
+        <div class="flex gap-2 md:gap-4">
+            <button onclick="toggleTheme()" class="p-2 px-3 rounded-lg bg-gray-100 dark:bg-gray-800">🌓</button>
+            <button onclick="toggleDir()" id="dir-btn" class="p-2 px-3 rounded-lg bg-gray-100 dark:bg-gray-800 font-semibold text-sm">LTR</button>
+        </div>
+    </nav>
+
+    <main class="min-h-[80vh] flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-gray-900 p-6 md:p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800 transition-colors duration-300">
+        <h2 class="text-2xl md:text-3xl font-semibold text-center text-gray-900 dark:text-white mb-8">Hire Your Crane</h2>
+        
+        <form id="booking-form" class="space-y-4">
+            <!-- Customer Details -->
+            <div class="grid grid-cols-1 gap-4">
+                <input type="text" placeholder="Full Name" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-orange-600">
+                <input type="tel" placeholder="Phone Number" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-orange-600">
+                <input type="text" placeholder="Site Location" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-orange-600">
+                <input type="time" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 text-gray-500 dark:text-gray-400 outline-none focus:ring-2 focus:ring-orange-600">
+            </div>
+
+            <!-- Crane Selection -->
+            <div>
+                <label class="block text-sm text-gray-500 mb-2">Selected Crane</label>
+                <select id="crane-select" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-orange-600">
+                    <option value="4500" data-name="All-Terrain 100T">All-Terrain 100T ($4,500/day)</option>
+                    <option value="6000" data-name="Mobile Tower 200T">Mobile Tower 200T ($6,000/day)</option>
+                    <option value="3000" data-name="Rough Terrain 50T">Rough Terrain 50T ($3,000/day)</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <input type="number" id="days" value="5" min="1" placeholder="Days" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-orange-600">
+                <select id="add-equip" class="p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-orange-600 text-sm">
+                    <option value="0">No Add-ons</option>
+                    <option value="500">Rigging Gear (+$500)</option>
+                    <option value="1200">Heavy Safety Mats (+$1,200)</option>
+                </select>
+            </div>
+
+            <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <input type="checkbox" id="operator" checked class="accent-orange-600 w-4 h-4"> Operator Included
+            </label>
+
+            <!-- Summary -->
+            <div class="space-y-2 pt-4 border-t dark:border-gray-700">
+                <div class="flex justify-between text-sm"><span class="text-gray-500">Crane:</span> <span id="sum-crane" class="font-semibold text-gray-900 dark:text-white">-</span></div>
+                <div class="flex justify-between text-sm"><span class="text-gray-500">Cost:</span> <span id="base-price" class="font-semibold text-gray-900 dark:text-white">$0</span></div>
+                <div class="flex justify-between text-sm"><span class="text-gray-500">Taxes (10%):</span> <span id="tax-price" class="font-semibold text-gray-900 dark:text-white">$0</span></div>
+                <div class="flex justify-between pt-2 border-t dark:border-gray-700">
+                    <span class="text-lg font-bold text-gray-900 dark:text-white">Total</span>
+                    <span id="total-price" class="text-xl font-bold text-orange-600">$0</span>
+                </div>
+            </div>
+
+            <button type="button" class="w-full py-4 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 transition-all hover:scale-[1.02]">Confirm Booking</button>
+        </form>
+    </div>
+</main>
+
+    <script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        }
+        function toggleDir() {
+            const btn = document.getElementById('dir-btn');
+            const newDir = document.documentElement.dir === 'rtl' ? 'ltr' : 'rtl';
+            document.documentElement.dir = newDir;
+            localStorage.dir = newDir;
+            btn.innerText = newDir.toUpperCase();
+        }
+        document.getElementById('dir-btn').innerText = (localStorage.dir || 'ltr').toUpperCase();
+    </script>
+</body>
+</html>

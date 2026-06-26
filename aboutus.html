@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Icon" href="assets/logo">
+    <title>HeavyLift Pro | Industrial Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Theme & Direction Persistence Logic
+        tailwind.config = { darkMode: 'class' };
+        
+        function applySettings() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else { document.documentElement.classList.remove('dark'); }
+            
+            document.documentElement.dir = localStorage.dir || 'ltr';
+        }
+        applySettings();
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
+
+<nav class="fixed w-full top-0 left-0 flex items-center justify-between px-6 lg:px-10 py-4 bg-white dark:bg-gray-900 shadow-md z-50 transition-all duration-300">
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0 z-20">
+        <img src="assets/logo" alt="Crane Logo" class="w-10 h-10 object-contain dark:invert">
+        <span class="text-2xl font-bold text-gray-900 dark:text-white">Crane</span>
+    </a> 
+    
+    <!-- Mobile Hamburger -->
+    <button id="menu-btn" class="lg:hidden p-2 focus:outline-none z-20">
+        <svg class="w-8 h-8 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+    </button>
+
+    <!-- Menu Container -->
+    <div id="menu" class="hidden absolute top-0 left-0 w-full h-screen lg:h-auto bg-white dark:bg-gray-900 lg:bg-transparent shadow-lg lg:shadow-none lg:relative lg:flex lg:items-center lg:justify-between lg:flex-1 lg:px-8 font-semibold p-6 lg:p-0 flex-col lg:flex-row transition-all duration-300">
+        
+        <!-- Spacer for centering on desktop -->
+        <div class="hidden lg:block lg:flex-1"></div>
+
+        <!-- Links (Centered) -->
+        <div class="flex flex-col lg:flex-row gap-4 lg:gap-x-6 xl:gap-x-8 lg:items-center mt-20 lg:mt-0">
+            <a href="index.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home</a>
+            <a href="home2.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home2</a>
+            <a href="aboutus.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">About Us</a>
+            <a href="services.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Services</a>
+            <a href="gallery.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Gallery</a>
+            <a href="pricing.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Pricing</a>
+            <a href="contact.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Contact</a>
+        </div>
+        
+        <!-- Buttons (Aligned Right) -->
+        <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 mt-8 lg:mt-0 lg:ml-auto">
+            <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-lg">🌓</button>
+            <button onclick="toggleDir()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-xs font-bold">LTR</button>
+            <a href="login.html">
+            <button class="h-10 px-5 flex items-center justify-center border-2 border-orange-600 text-orange-600 font-bold rounded-lg hover:bg-orange-600 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-md">Login</button>
+            </a>
+            <a href="hireme.html">
+            <button class="h-10 px-5 flex items-center justify-center bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/30">Hire!</button>
+
+            </a>
+        </div>
+    </div>
+</nav>
+<script>
+    // 1. Automatic Active State
+    const currentPath = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('text-orange-600', 'font-bold');
+        }
+    });
+
+    // 2. Responsive Menu Toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+
+    menuBtn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+        menu.classList.toggle('flex');
+    });
+
+    // 3. Reset for 1024px+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) {
+            menu.classList.remove('hidden');
+            menu.classList.add('flex');
+        } else {
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+        }
+    });
+</script>
+<section class="relative py-16 md:py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+        
+        <!-- Left Content -->
+        <div class="flex-1 space-y-8 text-center lg:text-left">
+            <h1 class="text-4xl md:text-6xl font-semibold text-gray-900 dark:text-white leading-tight">
+                Building Confidence Through <span class="text-orange-600">Safe Heavy Lifting</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+                For years, we've helped construction companies, manufacturers, infrastructure developers, and industrial clients complete complex lifting operations safely, efficiently, and on schedule.
+            </p>
+            
+            <!-- CTAs -->
+            <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                <a href="hireme.html" class="w-full sm:w-auto">
+                    <button class="w-full sm:w-auto px-8 py-4 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 transition-all shadow-lg shadow-orange-600/20 hover:scale-105 active:scale-95 text-lg">
+                        Hire a Crane
+                    </button>
+                </a>
+                <a href="contact.html" class="w-full sm:w-auto">
+                    <button class="w-full sm:w-auto px-8 py-4 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-semibold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-105 active:scale-95 text-lg">
+                        Contact Our Team
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Image -->
+        <div class="flex-1 w-full lg:w-1/2">
+            <div class="relative rounded-[2rem] overflow-hidden shadow-2xl aspect-square lg:aspect-[4/3]">
+                <img src="assets/abthero1" alt="Safe Heavy Lifting Operation" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                <!-- Subtle Gradient Overlay for depth -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+<section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-6 flex flex-col lg:flex-row-reverse items-center gap-16">
+        
+        <!-- Right Content: The Narrative (Now on the right) -->
+        <div class="flex-1 space-y-8">
+            <div class="space-y-4">
+                <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white leading-tight">
+                    From One Crane to a <span class="text-orange-600">Trusted Fleet</span>
+                </h2>
+                <div class="w-20 h-1.5 bg-orange-600 rounded-full"></div>
+            </div>
+
+            <div class="text-gray-600 dark:text-gray-400 space-y-6 text-lg leading-relaxed">
+                <p>
+                    Founded in 2011, our company began with a single mission: to provide reliable lifting solutions for local construction projects. What started with one crane has evolved into a premier fleet serving industries across India.
+                </p>
+                <p>
+                    Over the past 15 years, we’ve marked key milestones including the expansion into offshore energy projects and the integration of advanced heavy-lift technology. Every project is a testament to our commitment to safety, efficiency, and the success of our clients.
+                </p>
+                <div class="p-6 bg-orange-50 dark:bg-orange-900/10 rounded-2xl border-l-4 border-orange-600">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Our Vision for the Future</h4>
+                    <p class="text-sm">We are dedicated to pioneering sustainable lifting practices and continuing to set the gold standard for safety and reliability in the infrastructure sector.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Left Content: The Visual (Now on the left) -->
+        <div class="flex-1 w-full lg:w-1/2">
+            <div class="relative rounded-[2rem] overflow-hidden shadow-2xl aspect-[4/5] group">
+                <img src="assets/abtstry" alt="Our Journey" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105">
+                
+                <!-- Floating Stat Card -->
+                <div class="absolute bottom-8 right-8 left-8 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-xl">
+                    <div class="flex items-center gap-6">
+                        <div class="text-orange-600 text-4xl font-bold">15+</div>
+                        <div class="text-gray-900 dark:text-white font-semibold">Years of Dedicated <br>Industrial Excellence</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+<section class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-6">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Company at a Glance</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Statistics Grid (6 Cards) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Stat 1 -->
+            <div class="group p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 text-center shadow-sm">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 transition-colors">15+</div>
+                <div class="text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider">Years Experience</div>
+            </div>
+
+            <!-- Stat 2 -->
+            <div class="group p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 text-center shadow-sm">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 transition-colors">60+</div>
+                <div class="text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider">Modern Cranes</div>
+            </div>
+
+            <!-- Stat 3 -->
+            <div class="group p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 text-center shadow-sm">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 transition-colors">2,500+</div>
+                <div class="text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider">Projects Completed</div>
+            </div>
+
+            <!-- Stat 4 -->
+            <div class="group p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 text-center shadow-sm">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 transition-colors">150+</div>
+                <div class="text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider">Happy Clients</div>
+            </div>
+
+            <!-- Stat 5 -->
+            <div class="group p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 text-center shadow-sm">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 transition-colors">24/7</div>
+                <div class="text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider">Support Available</div>
+            </div>
+
+            <!-- Stat 6 (New) -->
+            <div class="group p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 text-center shadow-sm">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 transition-colors">100%</div>
+                <div class="text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wider">Safety Rating</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-6xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Core Principles</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Mission & Vision Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Mission Card -->
+            <div class="group p-10 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm transition-all hover:border-orange-600 hover:shadow-xl hover:-translate-y-2">
+                <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-8 transition-colors group-hover:bg-orange-600">
+                    <svg class="w-8 h-8 text-orange-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Our Mission</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    Deliver safe, reliable, and efficient crane rental and heavy lifting solutions that help clients complete projects on time and budget.
+                </p>
+            </div>
+
+            <!-- Vision Card -->
+            <div class="group p-10 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm transition-all hover:border-orange-600 hover:shadow-xl hover:-translate-y-2">
+                <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-8 transition-colors group-hover:bg-orange-600">
+                    <svg class="w-8 h-8 text-orange-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Our Vision</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    To become the most trusted crane rental and heavy lifting partner by continuously investing in people, technology, and safety.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-6">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Why Choose Us?</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Feature 1 -->
+            <div class="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Certified Operators</h3>
+                <p class="text-gray-500 dark:text-gray-400">Highly skilled and safety-certified professionals handling every lift with precision and care.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Modern Fleet</h3>
+                <p class="text-gray-500 dark:text-gray-400">State-of-the-art crane fleet, rigorously maintained to exceed industry safety standards.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">24/7 Response</h3>
+                <p class="text-gray-500 dark:text-gray-400">Emergency support around the clock to ensure your project never experiences downtime.</p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Project Engineers</h3>
+                <p class="text-gray-500 dark:text-gray-400">Expert engineering team providing detailed lift plans for complex and technical.</p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">On-Time Delivery</h3>
+                <p class="text-gray-500 dark:text-gray-400">Optimized logistics network ensuring your equipment arrives exactly when and  needed.</p>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Transparent Pricing</h3>
+                <p class="text-gray-500 dark:text-gray-400">Clear, competitive quotes with no hidden costs—what you see is what you pay.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-6">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Meet Our Leadership</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full mb-6"></div>
+            <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">The backbone of VEXA TECH: dedicated experts committed to safety, innovation, and project success.</p>
+        </div>
+
+        <!-- Team Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <!-- Team Member 1 -->
+            <div class="group relative overflow-hidden rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-3 hover:shadow-xl">
+                <div class="aspect-[3/4] overflow-hidden">
+                    <img src="assets/team1" alt="Srinivas K A" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">Sam</h3>
+                    <p class="text-orange-600 font-medium text-sm mb-3">Managing Director</p>
+                    <div class="inline-block px-4 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 text-xs font-semibold">15+ Years Exp.</div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="group relative overflow-hidden rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-3 hover:shadow-xl">
+                <div class="aspect-[3/4] overflow-hidden">
+                    <img src="assets/team2" alt="Heamanath" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">Heamanath</h3>
+                    <p class="text-orange-600 font-medium text-sm mb-3">Operations Manager</p>
+                    <div class="inline-block px-4 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 text-xs font-semibold">12+ Years Exp.</div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="group relative overflow-hidden rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-3 hover:shadow-xl">
+                <div class="aspect-[3/4] overflow-hidden">
+                    <img src="assets/team5" alt="Tejeshwar M G" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">Priya</h3>
+                    <p class="text-orange-600 font-medium text-sm mb-3">Project Engineer</p>
+                    <div class="inline-block px-4 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 text-xs font-semibold">8+ Years Exp.</div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="group relative overflow-hidden rounded-3xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-3 hover:shadow-xl">
+                <div class="aspect-[3/4] overflow-hidden">
+                    <img src="assets/team4" alt="Sree Sabarish A" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div class="p-6 text-center">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">Abi</h3>
+                    <p class="text-orange-600 font-medium text-sm mb-3">Safety Officer</p>
+                    <div class="inline-block px-4 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 text-xs font-semibold">10+ Years Exp.</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+<section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-6">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Our Commitment to Safety</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full mb-6"></div>
+            <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">Safety isn't just a protocol; it's the foundation of every lift we perform. We adhere to the highest industry standards to protect your team and assets.</p>
+        </div>
+
+        <!-- Safety Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Item 1 -->
+            <div class="p-8 rounded-[2rem] bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:shadow-lg group">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Daily Inspections</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Rigorous pre-start checks to ensure every machine is at peak performance.</p>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="p-8 rounded-[2rem] bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:shadow-lg group">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Certified Operators</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">All crew members are fully licensed and undergo continuous training.</p>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="p-8 rounded-[2rem] bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:shadow-lg group">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Preventive Maintenance</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Scheduled servicing to ensure fleet reliability and operational safety.</p>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="p-8 rounded-[2rem] bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:shadow-lg group">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Risk Assessments</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Comprehensive site analysis to mitigate hazards before work begins.</p>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="p-8 rounded-[2rem] bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:shadow-lg group">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Lift Planning</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Customized engineered lift plans for every unique project challenge.</p>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="p-8 rounded-[2rem] bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:shadow-lg group">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Emergency Response</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Strict adherence to safety procedures with 24/7 emergency protocols.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-6xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Our Process</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Process Steps -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Step 1 -->
+            <div class="group relative p-8 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-xl hover:border-orange-500/50">
+                <div class="text-orange-600 text-5xl font-bold opacity-20 mb-4 transition-all group-hover:opacity-100 group-hover:scale-110">01</div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Consultation</h3>
+                <p class="text-gray-500 dark:text-gray-400">Understanding your specific requirements and project goals through a professional discussion.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="group relative p-8 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-xl hover:border-orange-500/50">
+                <div class="text-orange-600 text-5xl font-bold opacity-20 mb-4 transition-all group-hover:opacity-100 group-hover:scale-110">02</div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Site Inspection</h3>
+                <p class="text-gray-500 dark:text-gray-400">On-site analysis to evaluate terrain, space limitations, and safety hazards for accurate planning.</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="group relative p-8 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-xl hover:border-orange-500/50">
+                <div class="text-orange-600 text-5xl font-bold opacity-20 mb-4 transition-all group-hover:opacity-100 group-hover:scale-110">03</div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Lift Planning</h3>
+                <p class="text-gray-500 dark:text-gray-400">Developing engineered lift plans, ensuring all safety factors and load capacities are perfectly matched.</p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="group relative p-8 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-xl hover:border-orange-500/50">
+                <div class="text-orange-600 text-5xl font-bold opacity-20 mb-4 transition-all group-hover:opacity-100 group-hover:scale-110">04</div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Crane Selection</h3>
+                <p class="text-gray-500 dark:text-gray-400">Choosing the optimal crane from our modern fleet based on load, height, and reach requirements.</p>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="group relative p-8 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-xl hover:border-orange-500/50">
+                <div class="text-orange-600 text-5xl font-bold opacity-20 mb-4 transition-all group-hover:opacity-100 group-hover:scale-110">05</div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Safe Execution</h3>
+                <p class="text-gray-500 dark:text-gray-400">Expert operation of equipment by our certified team, adhering strictly to safety protocols.</p>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="group relative p-8 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 transition-all hover:-translate-y-2 hover:shadow-xl hover:border-orange-500/50">
+                <div class="text-orange-600 text-5xl font-bold opacity-20 mb-4 transition-all group-hover:opacity-100 group-hover:scale-110">06</div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Project Completion</h3>
+                <p class="text-gray-500 dark:text-gray-400">Final review and secure demobilization, ensuring your site is left exactly as expected.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-3xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div class="space-y-4" x-data="{ selected: null }">
+            
+            <!-- Item 1 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:border-orange-500/50 transition-all">
+                <button @click="selected !== 1 ? selected = 1 : selected = null" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    How long have you been in business?
+                    <span x-text="selected === 1 ? '−' : '+'" class="text-orange-600 text-xl font-bold"></span>
+                </button>
+                <div x-show="selected === 1" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    We have been providing expert lifting solutions for over 15 years, building a reputation for reliability and safety.
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:border-orange-500/50 transition-all">
+                <button @click="selected !== 2 ? selected = 2 : selected = null" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    Do you provide certified operators?
+                    <span x-text="selected === 2 ? '−' : '+'" class="text-orange-600 text-xl font-bold"></span>
+                </button>
+                <div x-show="selected === 2" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    Yes, every crane rental comes with a fully certified and highly trained operator to ensure site safety and operational efficiency.
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:border-orange-500/50 transition-all">
+                <button @click="selected !== 3 ? selected = 3 : selected = null" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    What areas do you serve?
+                    <span x-text="selected === 3 ? '−' : '+'" class="text-orange-600 text-xl font-bold"></span>
+                </button>
+                <div x-show="selected === 3" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    We serve industrial and construction clients across the entire region. Contact us to confirm availability for your specific location.
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:border-orange-500/50 transition-all">
+                <button @click="selected !== 4 ? selected = 4 : selected = null" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    Can you handle emergency lifting projects?
+                    <span x-text="selected === 4 ? '−' : '+'" class="text-orange-600 text-xl font-bold"></span>
+                </button>
+                <div x-show="selected === 4" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    Absolutely. We offer 24/7 emergency response services to ensure that critical lifting needs are met without project delays.
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:border-orange-500/50 transition-all">
+                <button @click="selected !== 5 ? selected = 5 : selected = null" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    What types of cranes do you offer?
+                    <span x-text="selected === 5 ? '−' : '+'" class="text-orange-600 text-xl font-bold"></span>
+                </button>
+                <div x-show="selected === 5" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    Our fleet includes mobile cranes, all-terrain cranes, and crawler cranes, capable of handling loads ranging from 10 to 250+ tons.
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden hover:border-orange-500/50 transition-all">
+                <button @click="selected !== 6 ? selected = 6 : selected = null" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    How do you ensure job site safety?
+                    <span x-text="selected === 6 ? '−' : '+'" class="text-orange-600 text-xl font-bold"></span>
+                </button>
+                <div x-show="selected === 6" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    We conduct thorough site risk assessments and follow strict lift planning protocols for every single operation to ensure 100% safety.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-24 px-6 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto max-w-5xl">
+        <!-- CTA Card -->
+        <div class="rounded-[3rem] p-10 md:p-20 text-center border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-900 shadow-xl shadow-gray-200/50 dark:shadow-2xl relative overflow-hidden">
+            
+            <!-- Decorative Glow -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-orange-600 to-transparent"></div>
+
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Let's Lift Your Next Project Together
+                </h2>
+                <p class="text-gray-600 dark:text-gray-300 text-lg md:text-xl mb-12 leading-relaxed max-w-2xl mx-auto">
+                    Whether you need a crane for a single day or a large-scale industrial project, our experienced team is ready to help.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="contact.html">
+                        <button class="w-full sm:w-auto px-8 py-4 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-orange-600/20">
+                            Request a Free Quote
+                        </button>
+                    </a>
+                    <a href="hireme.html">
+                        <button class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-transparent border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white font-semibold rounded-xl hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 transition-all hover:scale-105 active:scale-95">
+                            Hire a Crane
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Note: This component uses Alpine.js for interactivity. Add <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> to your site head. -->
+<footer class="bg-gray-900 text-gray-300 pt-16 pb-8">
+    <div class="container mx-auto px-6">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <!-- Brand Column -->
+            <div class="space-y-4">
+                  <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0">
+        <img src="assets/logo" alt="Crane Logo" class="w-10 h-10 object-contain dark:invert">
+        <span class="text-2xl font-bold text-white-900 dark:text-white">Crane</span>
+    </a> 
+                
+                <p class="text-sm">Global leader in industrial crane rentals and heavy logistics solutions. Reliable, safe, and efficient.</p>
+                <!-- Social Icons -->
+                <div class="flex gap-4 pt-2">
+                    <a href="#" class="hover:text-orange-500 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5c0-1.98 1.48-3.5 3.5-3.5 1.05 0 2.05.05 2.05.05V9h-1.16c-.95 0-1.11.45-1.11 1.1V12h2.5l-.5 3h-2v6.8c4.56-.93 8-4.96 8-9.8z"/></svg></a>
+                    <a href="#" class="hover:text-orange-500 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                    <a href="#" class="hover:text-orange-500 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-white font-bold mb-6 border-b-2 border-orange-600 inline-block">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="index.html" class="hover:text-orange-500 transition-all">Home</a></li>
+                    <li><a href="home2.html" class="hover:text-orange-500 transition-all">Home2</a></li>
+                    <li><a href="aboutus.html" class="hover:text-orange-500 transition-all">About Us</a></li>
+                   <li><a href="services.html" class="hover:text-orange-500 transition-all">Services</a></li>
+                    <li><a href="gallery.html" class="hover:text-orange-500 transition-all">Gallery</a></li>
+
+                </ul>
+            </div>
+
+            <!-- Additional Links -->
+            <div>
+                <h4 class="text-white font-bold mb-6 border-b-2 border-orange-600 inline-block">Support</h4>
+                <ul class="space-y-3">
+                    <li><a href="hireme.html" class="hover:text-orange-500 transition-all">Hireme</a></li>
+                    <li><a href="contact.html" class="hover:text-orange-500 transition-all">Contact</a></li>
+                    <li><a href="pricing.html" class="hover:text-orange-500 transition-all">Pricing</a></li>
+
+                    <li><a href="404.html" class="hover:text-orange-500 transition-all">404 Error</a></li>
+                    <li><a href="comingsoon.html" class="hover:text-orange-500 transition-all">Coming Soon</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h4 class="text-white font-bold mb-6 border-b-2 border-orange-600 inline-block">Newsletter</h4>
+                <p class="text-sm mb-4">Subscribe for the latest industrial updates.</p>
+                <form class="flex flex-col gap-2">
+                    <input type="email" placeholder="Your email" class="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:border-orange-500 outline-none transition-all">
+                    <button class="w-full bg-orange-600 text-white font-bold py-3 rounded hover:bg-orange-700 transition-all hover:scale-[1.02] active:scale-[0.98]">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-center pt-8 border-t border-gray-800 text-sm">
+            &copy; 2026 Crane Inc. All rights reserved.
+        </div>
+    </div>
+</footer>
+<script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        }
+        function toggleDir() {
+            const newDir = document.documentElement.dir === 'rtl' ? 'ltr' : 'rtl';
+            document.documentElement.dir = newDir;
+            localStorage.dir = newDir;
+        }
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Icon" href="assets/logo">
+    <title>HeavyLift Pro | Industrial Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Theme & Direction Persistence Logic
+        tailwind.config = { darkMode: 'class' };
+        
+        function applySettings() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else { document.documentElement.classList.remove('dark'); }
+            
+            document.documentElement.dir = localStorage.dir || 'ltr';
+        }
+        applySettings();
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
+
+<nav class="fixed w-full top-0 left-0 flex items-center justify-between px-6 lg:px-10 py-4 bg-white dark:bg-gray-900 shadow-md z-50 transition-all duration-300">
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0 z-20">
+        <img src="assets/logo" alt="Crane Logo" class="w-10 h-10 object-contain dark:invert">
+        <span class="text-2xl font-bold text-gray-900 dark:text-white">Crane</span>
+    </a> 
+    
+    <!-- Mobile Hamburger -->
+    <button id="menu-btn" class="lg:hidden p-2 focus:outline-none z-20">
+        <svg class="w-8 h-8 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+    </button>
+
+    <!-- Menu Container -->
+    <div id="menu" class="hidden absolute top-0 left-0 w-full h-screen lg:h-auto bg-white dark:bg-gray-900 lg:bg-transparent shadow-lg lg:shadow-none lg:relative lg:flex lg:items-center lg:justify-between lg:flex-1 lg:px-8 font-semibold p-6 lg:p-0 flex-col lg:flex-row transition-all duration-300">
+        
+        <!-- Spacer for centering on desktop -->
+        <div class="hidden lg:block lg:flex-1"></div>
+
+        <!-- Links (Centered) -->
+        <div class="flex flex-col lg:flex-row gap-4 lg:gap-x-6 xl:gap-x-8 lg:items-center mt-20 lg:mt-0">
+            <a href="index.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home</a>
+            <a href="home2.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home2</a>
+            <a href="aboutus.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">About Us</a>
+            <a href="services.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Services</a>
+            <a href="gallery.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Gallery</a>
+            <a href="pricing.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Pricing</a>
+            <a href="contact.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Contact</a>
+        </div>
+        
+        <!-- Buttons (Aligned Right) -->
+        <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 mt-8 lg:mt-0 lg:ml-auto">
+            <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-lg">🌓</button>
+            <button onclick="toggleDir()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-xs font-bold">LTR</button>
+            <a href="login.html">
+            <button class="h-10 px-5 flex items-center justify-center border-2 border-orange-600 text-orange-600 font-bold rounded-lg hover:bg-orange-600 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-md">Login</button>
+            </a>
+            <a href="hireme.html">
+            <button class="h-10 px-5 flex items-center justify-center bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/30">Hire!</button>
+
+            </a>
+        </div>
+    </div>
+</nav>
+<script>
+    // 1. Automatic Active State
+    const currentPath = window.location.pathname.split('/').pop();
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('text-orange-600', 'font-bold');
+        }
+    });
+
+    // 2. Responsive Menu Toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+
+    menuBtn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+        menu.classList.toggle('flex');
+    });
+
+    // 3. Reset for 1024px+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) {
+            menu.classList.remove('hidden');
+            menu.classList.add('flex');
+        } else {
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+        }
+    });
+</script>
+<section class="relative w-full h-[85vh] flex items-center justify-center overflow-hidden transition-colors duration-300">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="assets/home2hero" alt="Powerful Lifting" class="w-full h-full object-cover">
+        <!-- Overlay for readability -->
+        <div class="absolute inset-0 bg-black/60 dark:bg-black/70"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="container relative z-10 mx-auto px-6 text-center">
+        <div class="max-w-4xl mx-auto space-y-8">
+            
+            <!-- Badge -->
+            <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-orange-600/20 border border-orange-600/50 text-orange-400 text-sm font-medium tracking-wide uppercase">
+                <span class="w-2 h-2 bg-orange-500 rounded-full mr-2 animate-pulse"></span>
+                Industrial Excellence Since 2011
+            </div>
+
+            <h1 class="text-4xl md:text-7xl font-semibold text-white leading-[1.1]">
+                Engineering <span class="text-orange-500">Powerful Lifting</span> Solutions
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-200 leading-relaxed max-w-2xl mx-auto">
+                Safe, reliable crane rental and heavy lifting services for construction, industrial, infrastructure, and energy projects of every size.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+                <a href="contact.html">
+                    <button class="w-full sm:w-auto px-10 py-4 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-orange-600/20 text-lg">
+                        Get a Free Quote
+                    </button>
+                </a>
+                <a href="comingsoon.html">
+                    <button class="w-full sm:w-auto px-10 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold rounded-xl hover:bg-white hover:text-gray-900 transition-all hover:scale-105 active:scale-95 text-lg">
+                        Explore Our Fleet
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Overlapping Finder Component -->
+<section class="relative -mt-24 z-20 px-6">
+    <div class="container mx-auto max-w-6xl">
+        <div class="bg-white dark:bg-gray-900 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-gray-200/50 dark:shadow-black/50 border border-gray-100 dark:border-gray-800">
+            
+            <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 items-end">
+                
+                <!-- Field 1 -->
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1">Crane Type</label>
+                    <select class="w-full p-3.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                        <option>Select Type</option>
+                        <option>Mobile Crane</option>
+                        <option>Crawler Crane</option>
+                        <option>All-Terrain</option>
+                    </select>
+                </div>
+
+                <!-- Field 2 -->
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1">Lift Capacity</label>
+                    <select class="w-full p-3.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                        <option>Capacity (Tons)</option>
+                        <option>10 - 30</option>
+                        <option>30 - 60</option>
+                        <option>60 - 100+</option>
+                    </select>
+                </div>
+
+                <!-- Field 3 -->
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1">Location</label>
+                    <input type="text" placeholder="Project City" class="w-full p-3.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                </div>
+
+                <!-- Field 4 -->
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1">Duration</label>
+                    <select class="w-full p-3.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                        <option>Rental Period</option>
+                        <option>Daily</option>
+                        <option>Weekly</option>
+                        <option>Monthly</option>
+                    </select>
+                </div>
+
+                <!-- Field 5 (Button) -->
+                <button type="submit" class="w-full p-3.5 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl shadow-lg shadow-orange-600/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                    Find Crane
+                </button>
+
+            </form>
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-7xl flex flex-col lg:flex-row items-center gap-16">
+        
+        <!-- Left: Image & Experience Badge -->
+        <div class="w-full lg:w-1/2 relative">
+            <div class="relative rounded-[2rem] overflow-hidden shadow-2xl group">
+                <img src="assets/home2" alt="VEXA TECH Heavy Lifting" class="w-full h-auto object-cover transition-transform duration-[2s] group-hover:scale-105">
+                
+                <!-- Experience Badge -->
+                <div class="absolute bottom-8 left-8 bg-orange-600 p-6 rounded-2xl text-white shadow-xl">
+                    <div class="text-4xl font-bold">15+</div>
+                    <div class="text-sm font-medium uppercase tracking-widest opacity-90">Years Exp.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Content -->
+        <div class="w-full lg:w-1/2 space-y-8">
+            <div>
+                <span class="text-orange-600 font-semibold uppercase tracking-wider text-sm">Who We Are</span>
+                <h2 class="text-3xl md:text-5xl font-semibold text-gray-900 dark:text-white mt-2 leading-tight">
+                    Engineering Excellence in Heavy Lifting
+                </h2>
+            </div>
+            
+            <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+                At Crane, we combine state-of-the-art machinery with expert engineering to deliver safe, reliable, and efficient lifting solutions. From complex industrial machinery installation to large-scale infrastructure projects, we are your trusted partner in heavy operations.
+            </p>
+
+            <div class="space-y-6">
+                <!-- Mission -->
+                <div class="flex gap-4">
+                    <div class="w-1.5 h-auto bg-orange-600 rounded-full shrink-0"></div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-900 dark:text-white">Our Mission</h4>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1">To provide world-class lifting solutions while maintaining the highest safety standards and operational integrity for every client.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button -->
+            <a href="about.html" class="inline-block px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold rounded-xl hover:bg-orange-600 transition-all hover:scale-105 active:scale-95">
+                Read More About Us
+            </a>
+        </div>
+        
+    </div>
+</section>
+<section class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-7xl">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Our Core Services</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Service Card Template -->
+            <!-- 1. Mobile Crane Rental -->
+            <div class="group relative overflow-hidden rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/Mobile Crane Rental" alt="Mobile Crane Rental" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-orange-600 transition-colors">Mobile Crane Rental</h3>
+                    <ul class="text-gray-500 dark:text-gray-400 space-y-2 mb-6">
+                        <li>✓ Hourly to monthly plans</li>
+                        <li>✓ Certified operators included</li>
+                        <li>✓ Capacity: 10–100 Tons</li>
+                    </ul>
+                    <button class="w-full py-3 border border-orange-600 text-orange-600 rounded-xl font-semibold hover:bg-orange-600 hover:text-white transition-all">Learn More</button>
+                </div>
+            </div>
+
+            <!-- 2. Heavy Lift Solutions -->
+            <div class="group relative overflow-hidden rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/Heavy Lift Solutions" alt="Heavy Lift Solutions" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-orange-600 transition-colors">Heavy Lift Solutions</h3>
+                    <ul class="text-gray-500 dark:text-gray-400 space-y-2 mb-6">
+                        <li>✓ Oversized equipment install</li>
+                        <li>✓ Industrial machinery relocation</li>
+                        <li>✓ Transformer installation</li>
+                    </ul>
+                    <button class="w-full py-3 border border-orange-600 text-orange-600 rounded-xl font-semibold hover:bg-orange-600 hover:text-white transition-all">Learn More</button>
+                </div>
+            </div>
+
+            <!-- 3. Industrial Crane Services -->
+            <div class="group relative overflow-hidden rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/Industrial Crane Services" alt="Industrial Crane Services" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-orange-600 transition-colors">Industrial Crane Services</h3>
+                    <ul class="text-gray-500 dark:text-gray-400 space-y-2 mb-6">
+                        <li>✓ Factory maintenance</li>
+                        <li>✓ Plant shutdown support</li>
+                        <li>✓ Manufacturing facilities</li>
+                    </ul>
+                    <button class="w-full py-3 border border-orange-600 text-orange-600 rounded-xl font-semibold hover:bg-orange-600 hover:text-white transition-all">Learn More</button>
+                </div>
+            </div>
+
+            <!-- 4. Construction Crane Rental -->
+            <div class="group relative overflow-hidden rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/Construction Crane Rental" alt="Construction Crane" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-orange-600 transition-colors">Construction Rental</h3>
+                    <ul class="text-gray-500 dark:text-gray-400 space-y-2 mb-6">
+                        <li>✓ Residential projects</li>
+                        <li>✓ Commercial buildings</li>
+                        <li>✓ High-rise developments</li>
+                    </ul>
+                    <button class="w-full py-3 border border-orange-600 text-orange-600 rounded-xl font-semibold hover:bg-orange-600 hover:text-white transition-all">Learn More</button>
+                </div>
+            </div>
+
+            <!-- 5. Infrastructure Lifting -->
+            <div class="group relative overflow-hidden rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/Infrastructure Lifting" alt="Infrastructure" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-orange-600 transition-colors">Infrastructure Lifting</h3>
+                    <ul class="text-gray-500 dark:text-gray-400 space-y-2 mb-6">
+                        <li>✓ Flyovers & Metro rail</li>
+                        <li>✓ Highway construction</li>
+                        <li>✓ Airport & Port projects</li>
+                    </ul>
+                    <button class="w-full py-3 border border-orange-600 text-orange-600 rounded-xl font-semibold hover:bg-orange-600 hover:text-white transition-all">Learn More</button>
+                </div>
+            </div>
+
+            <!-- 6. Oil & Gas Projects -->
+            <div class="group relative overflow-hidden rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                <div class="h-56 overflow-hidden">
+                    <img src="assets/Oil & Gas Projects" alt="Oil & Gas" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4 group-hover:text-orange-600 transition-colors">Oil & Gas Projects</h3>
+                    <ul class="text-gray-500 dark:text-gray-400 space-y-2 mb-6">
+                        <li>✓ Refinery maintenance</li>
+                        <li>✓ Pipeline construction</li>
+                        <li>✓ Offshore support</li>
+                    </ul>
+                    <button class="w-full py-3 border border-orange-600 text-orange-600 rounded-xl font-semibold hover:bg-orange-600 hover:text-white transition-all">Learn More</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-7xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Why Choose Us?</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Feature 1 -->
+            <div class="group p-8 rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Certified Operators</h3>
+                <p class="text-gray-500 dark:text-gray-400">Expert, licensed professionals committed to the highest safety and performance standards.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="group p-8 rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Modern Equipment</h3>
+                <p class="text-gray-500 dark:text-gray-400">Our state-of-the-art fleet is rigorously maintained to ensure downtime and efficiency.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="group p-8 rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Fully Insured</h3>
+                <p class="text-gray-500 dark:text-gray-400">Total protection with comprehensive insurance coverage for your assets.</p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="group p-8 rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">24/7 Support</h3>
+                <p class="text-gray-500 dark:text-gray-400">We are always available to ensure your project stays on schedule, day or night.</p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="group p-8 rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Competitive Pricing</h3>
+                <p class="text-gray-500 dark:text-gray-400">High-quality service at clear, transparent rates designed to respect your project budget.</p>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="group p-8 rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500/50 transition-all hover:-translate-y-2 shadow-sm">
+                <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Fast Deployment</h3>
+                <p class="text-gray-500 dark:text-gray-400">Our agile logistics network ensures your equipment is on-site exactly when you need it.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-7xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Industries We Serve</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Industry Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Industry 1: Commercial -->
+            <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer">
+                <img src="assets/se" alt="Commercial Construction" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent flex flex-col justify-end p-8 transition-opacity duration-300">
+                    <h3 class="text-2xl font-semibold text-white mb-1">Commercial</h3>
+                    <div class="w-12 h-1 bg-orange-600 rounded-full mb-3"></div>
+                    <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Expert lifting for malls, offices, and high-rise commercial infrastructure.</p>
+                </div>
+            </div>
+
+            <!-- Industry 2: Residential -->
+            <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer">
+                <img src="assets/se1" alt="Residential Construction" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent flex flex-col justify-end p-8 transition-opacity duration-300">
+                    <h3 class="text-2xl font-semibold text-white mb-1">Residential</h3>
+                    <div class="w-12 h-1 bg-orange-600 rounded-full mb-3"></div>
+                    <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Precision support for housing projects and residential complex developments.</p>
+                </div>
+            </div>
+
+            <!-- Industry 3: Manufacturing -->
+            <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer">
+                <img src="assets/se3" alt="Manufacturing" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent flex flex-col justify-end p-8 transition-opacity duration-300">
+                    <h3 class="text-2xl font-semibold text-white mb-1">Manufacturing</h3>
+                    <div class="w-12 h-1 bg-orange-600 rounded-full mb-3"></div>
+                    <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Heavy machinery installation and plant-wide equipment logistics.</p>
+                </div>
+            </div>
+
+            <!-- Industry 4: Infrastructure -->
+            <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer">
+                <img src="assets/se5" alt="Infrastructure" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent flex flex-col justify-end p-8 transition-opacity duration-300">
+                    <h3 class="text-2xl font-semibold text-white mb-1">Infrastructure</h3>
+                    <div class="w-12 h-1 bg-orange-600 rounded-full mb-3"></div>
+                    <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Key support for bridges, highways, metro rails, and public works.</p>
+                </div>
+            </div>
+
+            <!-- Industry 5: Oil & Gas -->
+            <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer">
+                <img src="assets/se6" alt="Oil & Gas" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent flex flex-col justify-end p-8 transition-opacity duration-300">
+                    <h3 class="text-2xl font-semibold text-white mb-1">Oil & Gas</h3>
+                    <div class="w-12 h-1 bg-orange-600 rounded-full mb-3"></div>
+                    <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Specialized lifting for refineries, pipelines, and offshore energy sites.</p>
+                </div>
+            </div>
+
+            <!-- Industry 6: Renewable Energy -->
+            <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer">
+                <img src="assets/se2" alt="Renewable Energy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 to-transparent flex flex-col justify-end p-8 transition-opacity duration-300">
+                    <h3 class="text-2xl font-semibold text-white mb-1">Renewable Energy</h3>
+                    <div class="w-12 h-1 bg-orange-600 rounded-full mb-3"></div>
+                    <p class="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">Installation and maintenance for wind turbines and solar infrastructure.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-7xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Rental Packages</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full mb-6"></div>
+            <p class="text-gray-500 dark:text-gray-400">Flexible solutions tailored to the scale of your project.</p>
+        </div>
+
+        <!-- Pricing Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            
+            <!-- Standard Plan -->
+            <div class="p-8 rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 transition-all hover:border-orange-500/50 hover:shadow-xl">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Standard</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Perfect for small projects</p>
+                <ul class="space-y-4 mb-8 text-gray-700 dark:text-gray-300">
+                    <li class="flex items-center gap-3">✓ Operator included</li>
+                    <li class="flex items-center gap-3">✓ Daily rental access</li>
+                    <li class="flex items-center gap-3 text-gray-400">✕ Rigging support</li>
+                    <li class="flex items-center gap-3 text-gray-400">✕ Dedicated manager</li>
+                </ul>
+                <button class="w-full py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-orange-600 hover:text-orange-600 font-semibold transition-all">Select Plan</button>
+            </div>
+
+            <!-- Professional Plan (Highlighted) -->
+            <div class="p-8 rounded-[2rem] bg-white dark:bg-gray-900 border-2 border-orange-600 shadow-2xl scale-100 md:scale-105 relative">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-orange-600 text-white px-4 py-1 rounded-full text-sm font-semibold">MOST POPULAR</div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Professional ⭐</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">For medium-scale construction</p>
+                <ul class="space-y-4 mb-8 text-gray-700 dark:text-gray-300">
+                    <li class="flex items-center gap-3">✓ Operator included</li>
+                    <li class="flex items-center gap-3">✓ Rigging support</li>
+                    <li class="flex items-center gap-3">✓ Priority scheduling</li>
+                    <li class="flex items-center gap-3 text-gray-400">✕ Lift engineering</li>
+                </ul>
+                <button class="w-full py-3 rounded-xl bg-orange-600 text-white font-semibold hover:bg-orange-700 transition-all shadow-lg shadow-orange-600/30">Select Plan</button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="p-8 rounded-[2rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 transition-all hover:border-orange-500/50 hover:shadow-xl">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Enterprise</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Heavy industrial projects</p>
+                <ul class="space-y-4 mb-8 text-gray-700 dark:text-gray-300">
+                    <li class="flex items-center gap-3">✓ Dedicated project manager</li>
+                    <li class="flex items-center gap-3">✓ Lift engineering</li>
+                    <li class="flex items-center gap-3">✓ On-site consultation</li>
+                    <li class="flex items-center gap-3">✓ Full-service support</li>
+                </ul>
+                <button class="w-full py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-orange-600 hover:text-orange-600 font-semibold transition-all">Contact Us</button>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-12 md:py-20 bg-white dark:bg-gray-900 px-4 md:px-6">
+    <div class="container mx-auto">
+        <!-- Section Header -->
+        <div class="text-center mb-12 md:mb-16">
+            <h2 class="text-2xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Client Success Stories</h2>
+            <div class="w-20 h-1 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Responsive Grid: 
+             360px+: 1 column
+             768px+: 2 columns
+             1024px+: 4 columns
+        -->
+        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <script>
+                const testimonials = [
+                    { name: "John ", role: "Project Manager", quote: "The professionalism and precision shown during our airport expansion were unmatched. A truly  partner.", img: "assets/t1" },
+                    { name: "Sarah ", role: "Site Supervisor", quote: "Safety is their priority. We completed the wind farm install ahead of schedule without a single incident.", img: "assets/t3" },
+                    { name: "Robert", role: "Operations Lead", quote: "Reliable equipment and expert operators. They made our heavy industrial  plant maintenance look easy.", img: "assets/t2" },
+                    { name: "Emily ", role: "Construction Director", quote: "Exceptional service and quick response times. The best crane rental  plant maintenance team we have worked.", img: "assets/t4" }
+                ];
+
+                document.write(testimonials.map(t => `
+                    <div class="group relative bg-white dark:bg-gray-800 p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-300 hover:-translate-y-2">
+                        <!-- Top Accent -->
+                        <div class="absolute top-0 left-0 w-full h-1 bg-orange-600 rounded-t-3xl transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                        
+                        <!-- Client Profile -->
+                        <div class="flex items-center gap-3 md:gap-4 mb-6">
+                            <img src="${t.img}" alt="${t.name}" class="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-orange-100 dark:border-gray-600">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white text-sm md:text-base">${t.name}</h4>
+                                <p class="text-xs md:text-sm text-orange-600 font-medium">${t.role}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Quote -->
+                        <p class="text-gray-600 dark:text-gray-400 italic mb-6 leading-relaxed text-sm md:text-base">"${t.quote}"</p>
+                        
+                        <!-- Rating Stars -->
+                        <div class="flex text-orange-500 text-xs md:text-sm">
+                            ★★★★★
+                        </div>
+                    </div>
+                `).join(''));
+            </script>
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-7xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Our Process</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full mb-6"></div>
+            <p class="text-gray-500 dark:text-gray-400">Our lifting services workflow, designed for clarity and safety.</p>
+        </div>
+
+        <!-- Desktop Horizontal Timeline (Visible on lg+) -->
+        <div class="hidden lg:flex justify-between items-start relative px-10">
+            <!-- Connector Line -->
+            <div class="absolute top-10 left-0 w-full h-0.5 bg-gray-200 dark:bg-gray-800 -z-0"></div>
+            
+            <!-- Step Array -->
+            <div class="relative z-10 flex flex-col items-center text-center w-32 group">
+                <div class="w-20 h-20 bg-white dark:bg-gray-900 border-2 border-orange-600 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all shadow-md">
+                    <span class="text-2xl font-semibold">01</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Request a Quote</h3>
+            </div>
+            <div class="relative z-10 flex flex-col items-center text-center w-32 group">
+                <div class="w-20 h-20 bg-white dark:bg-gray-900 border-2 border-orange-600 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all shadow-md">
+                    <span class="text-2xl font-semibold">02</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Site Survey</h3>
+            </div>
+            <div class="relative z-10 flex flex-col items-center text-center w-32 group">
+                <div class="w-20 h-20 bg-white dark:bg-gray-900 border-2 border-orange-600 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all shadow-md">
+                    <span class="text-2xl font-semibold">03</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Lift Planning</h3>
+            </div>
+            <div class="relative z-10 flex flex-col items-center text-center w-32 group">
+                <div class="w-20 h-20 bg-white dark:bg-gray-900 border-2 border-orange-600 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all shadow-md">
+                    <span class="text-2xl font-semibold">04</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Equipment Delivery</h3>
+            </div>
+            <div class="relative z-10 flex flex-col items-center text-center w-32 group">
+                <div class="w-20 h-20 bg-white dark:bg-gray-900 border-2 border-orange-600 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all shadow-md">
+                    <span class="text-2xl font-semibold">05</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Safe Lifting</h3>
+            </div>
+            <div class="relative z-10 flex flex-col items-center text-center w-32 group">
+                <div class="w-20 h-20 bg-white dark:bg-gray-900 border-2 border-orange-600 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all shadow-md">
+                    <span class="text-2xl font-semibold">06</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Project Completion</h3>
+            </div>
+        </div>
+
+        <!-- Mobile & Tablet Stacked Layout (Visible on lg and below) -->
+        <div class="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border-l-4 border-orange-600 hover:shadow-lg transition-all">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-1">01. Request a Quote</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Share your project details to get started.</p>
+            </div>
+            <div class="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border-l-4 border-orange-600 hover:shadow-lg transition-all">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-1">02. Site Survey</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Professional on-site terrain and safety assessment.</p>
+            </div>
+            <div class="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border-l-4 border-orange-600 hover:shadow-lg transition-all">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-1">03. Lift Planning</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Engineered plans for precision and efficiency.</p>
+            </div>
+            <div class="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border-l-4 border-orange-600 hover:shadow-lg transition-all">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-1">04. Equipment Delivery</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Rapid mobilization to your site.</p>
+            </div>
+            <div class="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border-l-4 border-orange-600 hover:shadow-lg transition-all">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-1">05. Safe Lifting</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Execution by certified teams under strict safety.</p>
+            </div>
+            <div class="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border-l-4 border-orange-600 hover:shadow-lg transition-all">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-1">06. Project Completion</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Final review and secure demobilization.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300 px-6">
+    <div class="container mx-auto max-w-3xl">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Accordion Container -->
+        <div class="space-y-4" x-data="{ active: null }">
+            
+            <!-- Item 1 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden transition-all hover:border-orange-500/50">
+                <button @click="active = (active === 1 ? null : 1)" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    How do I choose the right crane?
+                    <span class="text-orange-600 text-xl font-bold transition-transform duration-300" :class="active === 1 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="active === 1" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    We evaluate your specific lift weight, height requirements, and site access constraints to recommend the optimal crane from our modern fleet.
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden transition-all hover:border-orange-500/50">
+                <button @click="active = (active === 2 ? null : 2)" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    Is an operator included?
+                    <span class="text-orange-600 text-xl font-bold transition-transform duration-300" :class="active === 2 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="active === 2" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    Yes, all our crane rentals include a fully certified and highly trained operator to ensure site safety and operational efficiency.
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden transition-all hover:border-orange-500/50">
+                <button @click="active = (active === 3 ? null : 3)" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    What areas do you serve?
+                    <span class="text-orange-600 text-xl font-bold transition-transform duration-300" :class="active === 3 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="active === 3" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    We provide professional lifting solutions across the entire region. Contact our team to confirm service availability for your specific site.
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden transition-all hover:border-orange-500/50">
+                <button @click="active = (active === 4 ? null : 4)" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    Do you provide emergency services?
+                    <span class="text-orange-600 text-xl font-bold transition-transform duration-300" :class="active === 4 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="active === 4" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    Absolutely. We offer 24/7 support for critical projects, industrial shutdowns, and emergency lifting requirements.
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden transition-all hover:border-orange-500/50">
+                <button @click="active = (active === 5 ? null : 5)" class="w-full p-6 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:text-orange-600 transition-colors">
+                    How is pricing calculated?
+                    <span class="text-orange-600 text-xl font-bold transition-transform duration-300" :class="active === 5 ? 'rotate-45' : ''">+</span>
+                </button>
+                <div x-show="active === 5" class="px-6 pb-6 text-gray-600 dark:text-gray-400">
+                    Pricing is based on crane type, project duration, load complexity, and site requirements. We provide transparent, competitive quotes for every project.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Alpine.js for interactivity -->
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<section class="py-24 px-6 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto max-w-5xl">
+        <!-- CTA Card -->
+        <div class="rounded-[3rem] p-10 md:p-20 text-center border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 shadow-xl relative overflow-hidden">
+            
+            <!-- Decorative Accent -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-orange-600"></div>
+
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Ready for Your Next Lift?
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400 text-lg md:text-xl mb-12 leading-relaxed max-w-2xl mx-auto">
+                    Request a personalized quote, and our specialists will recommend the right equipment for your project.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="hireme.html">
+                        <button class="w-full sm:w-auto px-8 py-4 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-orange-600/20">
+                            Hire a Crane
+                        </button>
+                    </a>
+                    <a href="contact.html">
+                        <button class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-transparent border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white font-semibold rounded-xl hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 transition-all hover:scale-105 active:scale-95">
+                            Contact Us
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="bg-gray-900 text-gray-300 pt-16 pb-8">
+    <div class="container mx-auto px-6">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <!-- Brand Column -->
+            <div class="space-y-4">
+                  <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0">
+        <img src="assets/logo" alt="Crane Logo" class="w-10 h-10 object-contain dark:invert">
+        <span class="text-2xl font-bold text-white-900 dark:text-white">Crane</span>
+    </a> 
+                
+                <p class="text-sm">Global leader in industrial crane rentals and heavy logistics solutions. Reliable, safe, and efficient.</p>
+                <!-- Social Icons -->
+                <div class="flex gap-4 pt-2">
+                    <a href="#" class="hover:text-orange-500 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5c0-1.98 1.48-3.5 3.5-3.5 1.05 0 2.05.05 2.05.05V9h-1.16c-.95 0-1.11.45-1.11 1.1V12h2.5l-.5 3h-2v6.8c4.56-.93 8-4.96 8-9.8z"/></svg></a>
+                    <a href="#" class="hover:text-orange-500 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                    <a href="#" class="hover:text-orange-500 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-white font-bold mb-6 border-b-2 border-orange-600 inline-block">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="index.html" class="hover:text-orange-500 transition-all">Home</a></li>
+                    <li><a href="home2.html" class="hover:text-orange-500 transition-all">Home2</a></li>
+                    <li><a href="aboutus.html" class="hover:text-orange-500 transition-all">About Us</a></li>
+                   <li><a href="services.html" class="hover:text-orange-500 transition-all">Services</a></li>
+                    <li><a href="gallery.html" class="hover:text-orange-500 transition-all">Gallery</a></li>
+
+                </ul>
+            </div>
+
+            <!-- Additional Links -->
+            <div>
+                <h4 class="text-white font-bold mb-6 border-b-2 border-orange-600 inline-block">Support</h4>
+                <ul class="space-y-3">
+                    <li><a href="hireme.html" class="hover:text-orange-500 transition-all">Hireme</a></li>
+                    <li><a href="contact.html" class="hover:text-orange-500 transition-all">Contact</a></li>
+                    <li><a href="pricing.html" class="hover:text-orange-500 transition-all">Pricing</a></li>
+
+                    <li><a href="404.html" class="hover:text-orange-500 transition-all">404 Error</a></li>
+                    <li><a href="comingsoon.html" class="hover:text-orange-500 transition-all">Coming Soon</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h4 class="text-white font-bold mb-6 border-b-2 border-orange-600 inline-block">Newsletter</h4>
+                <p class="text-sm mb-4">Subscribe for the latest industrial updates.</p>
+                <form class="flex flex-col gap-2">
+                    <input type="email" placeholder="Your email" class="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:border-orange-500 outline-none transition-all">
+                    <button class="w-full bg-orange-600 text-white font-bold py-3 rounded hover:bg-orange-700 transition-all hover:scale-[1.02] active:scale-[0.98]">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-center pt-8 border-t border-gray-800 text-sm">
+            &copy; 2026 Crane Inc. All rights reserved.
+        </div>
+    </div>
+</footer>
+<script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        }
+        function toggleDir() {
+            const newDir = document.documentElement.dir === 'rtl' ? 'ltr' : 'rtl';
+            document.documentElement.dir = newDir;
+            localStorage.dir = newDir;
+        }
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Icon" href="assets/logo">
+    <title>HeavyLift Pro | Industrial Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+        function applySettings() {
+            if (localStorage.theme === 'dark') document.documentElement.classList.add('dark');
+            document.documentElement.dir = localStorage.dir || 'ltr';
+        }
+        applySettings();
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 font-sans transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="p-4 md:p-6 flex justify-between items-center bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+        <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0">
+            <img src="assets/logo" alt="Logo" class="w-8 h-8 md:w-10 md:h-10 object-contain dark:invert">
+            <span class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Crane</span>
+        </a>        
+        <div class="flex gap-2 md:gap-4">
+             <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-lg">🌓</button>
+            <button onclick="toggleDir()" id="dir-btn" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-xs font-bold">LTR</button>
+        </div>
+    </nav>
+
+    <!-- Content Container -->
+    <main class="min-h-[80vh] flex items-center justify-center p-4">
+        <div class="w-full max-w-lg text-center bg-white dark:bg-gray-900 p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800 transition-colors duration-300">
+            
+            <!-- Icon/Indicator -->
+            <div class="w-20 h-20 bg-orange-100 dark:bg-orange-900/20 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-8">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4">Coming Soon</h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-10 text-sm md:text-base leading-relaxed">
+                We are working hard to bring you something extraordinary. Stay tuned for updates on our latest services and professional crane solutions.
+            </p>
+            
+            <!-- Notify Form -->
+            <form class="flex flex-col sm:flex-row gap-2" onsubmit="return false;">
+                <input type="email" placeholder="Enter your email" class="flex-1 p-3 md:p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 focus:ring-2 focus:ring-orange-600 outline-none text-gray-900 dark:text-white">
+                <button class="px-6 py-3 md:py-4 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 transition-all hover:scale-[1.02]">
+                    Notify Me
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        }
+        function toggleDir() {
+            const btn = document.getElementById('dir-btn');
+            const newDir = document.documentElement.dir === 'rtl' ? 'ltr' : 'rtl';
+            document.documentElement.dir = newDir;
+            localStorage.dir = newDir;
+            btn.innerText = newDir.toUpperCase();
+        }
+        document.getElementById('dir-btn').innerText = (localStorage.dir || 'ltr').toUpperCase();
+    </script>
+</body>
+</html>
