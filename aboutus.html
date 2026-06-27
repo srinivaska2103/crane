@@ -37,35 +37,36 @@
     </button>
 
     <!-- Menu Container -->
-    <div id="menu" class="hidden absolute top-0 left-0 w-full h-screen lg:h-auto bg-white dark:bg-gray-900 lg:bg-transparent shadow-lg lg:shadow-none lg:relative lg:flex lg:items-center lg:justify-between lg:flex-1 lg:px-8 font-semibold p-6 lg:p-0 flex-col lg:flex-row transition-all duration-300">
+   <div id="menu" class="hidden absolute top-0 left-0 w-full h-screen lg:h-auto bg-white dark:bg-gray-900 lg:bg-transparent shadow-lg lg:shadow-none lg:relative lg:flex lg:items-center lg:justify-between lg:flex-1 lg:px-8 font-semibold p-6 lg:p-0 flex-col lg:flex-row transition-all duration-300">
         
-        <!-- Spacer for centering on desktop -->
-        <div class="hidden lg:block lg:flex-1"></div>
+    <!-- Spacer for centering on desktop -->
+    <div class="hidden lg:block lg:flex-1"></div>
 
-        <!-- Links (Centered) -->
-        <div class="flex flex-col lg:flex-row gap-4 lg:gap-x-6 xl:gap-x-8 lg:items-center mt-20 lg:mt-0">
-            <a href="index.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home</a>
-            <a href="home2.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home2</a>
-            <a href="aboutus.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">About Us</a>
-            <a href="services.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Services</a>
-            <a href="gallery.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Gallery</a>
-            <a href="pricing.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Pricing</a>
-            <a href="contact.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Contact</a>
-        </div>
-        
-        <!-- Buttons (Aligned Right) -->
-        <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 mt-8 lg:mt-0 lg:ml-auto">
-            <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-lg">🌓</button>
-            <button onclick="toggleDir()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-xs font-bold">LTR</button>
-            <a href="login.html">
-            <button class="h-10 px-5 flex items-center justify-center border-2 border-orange-600 text-orange-600 font-bold rounded-lg hover:bg-orange-600 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-md">Login</button>
-            </a>
-            <a href="hireme.html">
-            <button class="h-10 px-5 flex items-center justify-center bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/30">Hire!</button>
-
-            </a>
-        </div>
+    <!-- Links (Centered) - Changed lg:mr-auto to lg:mr-10 for controlled spacing -->
+    <div class="flex flex-col lg:flex-row gap-4 lg:gap-x-6 xl:gap-x-8 lg:items-center mt-20 lg:mt-0 lg:mr-10">
+        <a href="index.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home</a>
+        <a href="home2.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home2</a>
+        <a href="aboutus.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">About Us</a>
+        <a href="services.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Services</a>
+        <a href="gallery.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Gallery</a>
+        <a href="pricing.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Pricing</a>
+        <a href="contact.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Contact</a>
     </div>
+    
+    <!-- Buttons (Aligned Right) -->
+    <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 mt-8 lg:mt-0 ml-8 lg:ml-0">
+        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-lg">🌓</button>
+        <button onclick="toggleDir()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-xs font-bold">LTR</button>
+        
+        <a href="login.html">
+            <button class="h-10 px-5 flex items-center justify-center border-2 border-orange-600 text-orange-600 font-bold rounded-lg hover:bg-orange-600 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-md">Login</button>
+        </a>
+        
+        <a href="hireme.html">
+            <button class="h-10 px-5 flex items-center justify-center bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/30">Hire!</button>
+        </a>
+    </div>
+</div>
 </nav>
 <script>
     // 1. Automatic Active State

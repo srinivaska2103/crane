@@ -37,35 +37,36 @@
     </button>
 
     <!-- Menu Container -->
-    <div id="menu" class="hidden absolute top-0 left-0 w-full h-screen lg:h-auto bg-white dark:bg-gray-900 lg:bg-transparent shadow-lg lg:shadow-none lg:relative lg:flex lg:items-center lg:justify-between lg:flex-1 lg:px-8 font-semibold p-6 lg:p-0 flex-col lg:flex-row transition-all duration-300">
+   <div id="menu" class="hidden absolute top-0 left-0 w-full h-screen lg:h-auto bg-white dark:bg-gray-900 lg:bg-transparent shadow-lg lg:shadow-none lg:relative lg:flex lg:items-center lg:justify-between lg:flex-1 lg:px-8 font-semibold p-6 lg:p-0 flex-col lg:flex-row transition-all duration-300">
         
-        <!-- Spacer for centering on desktop -->
-        <div class="hidden lg:block lg:flex-1"></div>
+    <!-- Spacer for centering on desktop -->
+    <div class="hidden lg:block lg:flex-1"></div>
 
-        <!-- Links (Centered) -->
-        <div class="flex flex-col lg:flex-row gap-4 lg:gap-x-6 xl:gap-x-8 lg:items-center mt-20 lg:mt-0">
-            <a href="index.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home</a>
-            <a href="home2.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home2</a>
-            <a href="aboutus.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">About Us</a>
-            <a href="services.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Services</a>
-            <a href="gallery.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Gallery</a>
-            <a href="pricing.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Pricing</a>
-            <a href="contact.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Contact</a>
-        </div>
-        
-        <!-- Buttons (Aligned Right) -->
-        <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 mt-8 lg:mt-0 lg:ml-auto">
-            <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-lg">🌓</button>
-            <button onclick="toggleDir()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-xs font-bold">LTR</button>
-            <a href="login.html">
-            <button class="h-10 px-5 flex items-center justify-center border-2 border-orange-600 text-orange-600 font-bold rounded-lg hover:bg-orange-600 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-md">Login</button>
-            </a>
-            <a href="hireme.html">
-            <button class="h-10 px-5 flex items-center justify-center bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/30">Hire!</button>
-
-            </a>
-        </div>
+    <!-- Links (Centered) - Changed lg:mr-auto to lg:mr-10 for controlled spacing -->
+    <div class="flex flex-col lg:flex-row gap-4 lg:gap-x-6 xl:gap-x-8 lg:items-center mt-20 lg:mt-0 lg:mr-10">
+        <a href="index.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home</a>
+        <a href="home2.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Home2</a>
+        <a href="aboutus.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">About Us</a>
+        <a href="services.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Services</a>
+        <a href="gallery.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Gallery</a>
+        <a href="pricing.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Pricing</a>
+        <a href="contact.html" class="nav-link hover:text-orange-500 py-2 border-b lg:border-none border-gray-100 dark:border-gray-800 transition-colors whitespace-nowrap">Contact</a>
     </div>
+    
+    <!-- Buttons (Aligned Right) -->
+    <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 mt-8 lg:mt-0 ml-8 lg:ml-0">
+        <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-lg">🌓</button>
+        <button onclick="toggleDir()" class="w-10 h-10 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-orange-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 text-xs font-bold">LTR</button>
+        
+        <a href="login.html">
+            <button class="h-10 px-5 flex items-center justify-center border-2 border-orange-600 text-orange-600 font-bold rounded-lg hover:bg-orange-600 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-md">Login</button>
+        </a>
+        
+        <a href="hireme.html">
+            <button class="h-10 px-5 flex items-center justify-center bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/30">Hire!</button>
+        </a>
+    </div>
+</div>
 </nav>
 <script>
     // 1. Automatic Active State
@@ -96,10 +97,18 @@
         }
     });
 </script>
-<section class="relative py-24 bg-white dark:bg-gray-900 px-6 text-center overflow-hidden">
-    <div class="container mx-auto max-w-4xl">
+<section class="relative py-24 px-6 text-center overflow-hidden">
+    <!-- Background Image Container -->
+    <div class="absolute inset-0 z-0">
+        <img src="assets/se6" alt="Background" class="w-full h-full object-cover">
+        <!-- Overlay for readability -->
+        <div class="absolute inset-0 bg-white/90 dark:bg-black/80"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="container relative z-10 mx-auto max-w-4xl">
         <h1 class="text-4xl md:text-6xl font-semibold text-gray-900 dark:text-white mb-6">Let's Lift Your Project</h1>
-        <p class="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-8">Need expert crane services? Our team is ready to assist you. Reach out for a consultation or quote.</p>
+        <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-8">Need expert crane services? Our team is ready to assist you. Reach out for a consultation or quote.</p>
         <div class="w-20 h-1 bg-orange-600 mx-auto rounded-full"></div>
     </div>
 </section>
